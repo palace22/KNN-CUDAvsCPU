@@ -25,7 +25,8 @@ vector<float> Dataset::readInLineDataset(bool COALESCED) {
 	vector<float> dataset;
 	dataset.resize(this->dataset_size * this->data_size);
 
-	cout << endl << "######### ... READING ... #########" << endl;
+
+	cout << "=========================== ... READING ... ============================" << endl << endl;
 	if (inFile.is_open())
 	{
 		double start = omp_get_wtime();
@@ -55,7 +56,7 @@ vector<float> Dataset::readInLine(vector<vector<float>> v) {
 	int vector_size = v.size();
 	vector<float> inLine(data_size*vector_size);
 
-	cout << endl << "######### ... READING IN LINE ... #########" << endl;
+	cout << "=========================== ... READING ... ============================" << endl << endl;
 	
 	for (int i = 0; i < vector_size; i++) {
 		for (int j = 0; j < data_size; j++) {
@@ -73,7 +74,7 @@ vector<int> Dataset::readInLine(vector<vector<int>> v) {
 	int vector_size = v.size();
 	vector<int> inLine(data_size*vector_size);
 
-	cout << endl << "######### ... READING IN LINE ... #########" << endl;
+	cout << "=========================== ... READING ... ============================" << endl << endl;
 
 	for (int i = 0; i < vector_size; i++) {
 		for (int j = 0; j < data_size; j++) {
