@@ -50,7 +50,7 @@ std::vector<int> IvecsItrReader::NextInt()
 	if (ifs.read((char *)&D, sizeof(int))) { // read "D"
 		// Then, read a D-dim vec
 		vec.resize(D); // allocate D-dim
-		assert(ifs.read((char *)vec.data(), sizeof(int) * D)); // Read D * float.
+		assert(ifs.read((char *)vec.data(), sizeof(int) * D)); // Read D * int.
 		eof_flag = false;
 	}
 	else {
@@ -68,7 +68,6 @@ ItrReader::ItrReader(std::string filename, std::string ext){
     }else if(ext == "ivecs"){
         m_reader = (I_ItrReader *) new IvecsItrReader(filename);
     }else{
-        //std::cerr << "Error: strange ext type: " << ext << "in ItrReader" << std::endl;
         exit(1);
     }
 }
@@ -118,33 +117,4 @@ std::vector<std::vector<int> > ReadTopNI(std::string filename, std::string ext, 
 	}
 	return vecs;
 }
-
-double Elapsed() {
-    //timespec ts;
-    //clock_gettime(CLOCK_REALTIME, &ts);
-    return 0;
-}
-
-void WriteScores(std::string path, const std::vector<std::vector<std::pair<int, float> > > &scores)
-{
-    assert(!scores.empty());
-
-    std::ofstream ofs(path);
-    if(!ofs.is_open()){
-        //std::cerr << "Error: cannot open " << path << " in WriteScores" << std::endl;
-        exit(1);
-    }
-
-    int query_sz = (int) scores.size();
-    int top_k = (int) scores[0].size();
-
-    ofs << query_sz << std::endl << top_k << std::endl;
-    for(int q = 0; q < query_sz; ++q){
-        for(int k = 0; k < top_k; ++k){
-            ofs << scores[q][k].first << "," << scores[q][k].second << ",";
-        }
-        ofs << std::endl;
-    }
-}
-
 }

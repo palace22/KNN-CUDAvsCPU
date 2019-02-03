@@ -14,7 +14,6 @@ class Dataset
 {
 public:
 	Dataset() {};
-	//Dataset(string name="ds", int data_size=128, int dataset_size=10000) :name(name), data_size(data_size), dataset_size(dataset_size) {};
 	vector<float> generateInMemoryInLine(float mean, float variance); //to generate in memory dataset
 	vector<float> readInLineDataset(bool COALESCED); //to read .txt file dataset
 	vector<int> readInLine(vector<vector<int>> v);

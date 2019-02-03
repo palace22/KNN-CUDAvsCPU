@@ -9,7 +9,7 @@
 
 namespace pqtable {
 
-	// Iterative reader class for reading .bvecs or .fvecs files.
+	// Iterative reader class for reading .ivecs or .fvecs files.
 	// The next vector (std::vector<float>) is read by Next() function.
 	//
 	// Usage:
@@ -47,6 +47,7 @@ namespace pqtable {
 		bool eof_flag;
 	};
 	
+	// Iterative reader for ivec file
 	class IvecsItrReader : I_ItrReader {
 	public:
 		IvecsItrReader(std::string filename);
@@ -63,7 +64,7 @@ namespace pqtable {
 	// Proxy class
 	class ItrReader {
 	public:
-		// ext must be "fvecs" or "bvecs"
+		// ext must be "fvecs" or "ivecs"
 		ItrReader(std::string filename, std::string ext);
 		~ItrReader();
 
@@ -80,30 +81,6 @@ namespace pqtable {
 	// If top_n = -1, then read all vectors
 	std::vector<std::vector<float> > ReadTopN(std::string filename, std::string ext, int top_n = -1);
 	std::vector<std::vector<int> > ReadTopNI(std::string filename, std::string ext, int top_n = -1);
-
-
-
-
-
-
-	// Timer function
-	// Usage:
-	//   double t0 = Elapsed()
-	//   /* do something */
-	//   std::cout << Elapsed() - t0 << " [sec]" << std::endl;
-
-	double Elapsed();
-
-
-
-
-	// Output scores
-	// scores[q][k]: k-th score of q-th query, where each score is pair<int, float>.
-	// score[q][k].first: id,   score[q][k].second: distance
-	void WriteScores(std::string path,
-		const std::vector<std::vector<std::pair<int, float> > > &scores);
-
-
 }
 
 #endif // PQTABLE_UTILS_H
