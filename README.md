@@ -4,4 +4,4 @@ Utils to read .fvec and .ivec: https://github.com/matsui528/pqtable/tree/master/
 
 Dataset, query and groundtruth(ANN_SIFT10K, ANN_SIFT1M): http://corpus-texmex.irisa.fr/
 
-Thanks to [@chrischoy](https://github.com/chrischoy) for sort CUDA function
+Thanks to [@chrischoy](https://github.com/chrischoy) for cuInsertionSort function
