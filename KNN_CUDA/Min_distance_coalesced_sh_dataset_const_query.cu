@@ -4,33 +4,24 @@ __constant__ float constant_query[100 * DATA_SIZE];
 
 __global__ void min_distance_coalesced_sh_query_constant(float* dataset, float* results, int dataset_size, int data_size, int query_size) {
 
-	const unsigned TILE = query_size;
-	const unsigned Q = 100;
-	int iteration = DATA_SIZE;
-
-	__shared__ float sh_dataset[Q];
+	__shared__ float sh_dataset[DATA_SIZE];
 	int row = blockIdx.x * blockDim.x + threadIdx.x;
 
-	float d[Q];
-	float v;
+	float d = 0;
+	float v = 0;
 
-	if (row < dataset_size) {
-		for (int t = 0; t < query_size; t++)
-			d[t] = 0;
-		for (int phase = 0; phase < iteration; ++phase) {
-			sh_dataset[threadIdx.x] = dataset[row + dataset_size * phase];
-			__syncthreads();
+	sh_dataset[threadIdx.x] = dataset[row];
+	__syncthreads();
 
-			for (int i = 0; i < TILE; ++i) {
-				v = sh_dataset[threadIdx.x] - constant_query[phase + i * data_size];
-				d[i] += v * v;
-			}
-			__syncthreads();
+	if (threadIdx.x < query_size) {
+		for (int i = 0; i < DATA_SIZE; ++i) {
+			v = sh_dataset[i] - constant_query[i + threadIdx.x * DATA_SIZE];
+			d += v * v;
 		}
 
-		for (int i = 0; i < query_size; i++) {
-			results[row + i * dataset_size] = d[i];
-		}
+		results[  blockIdx.x + threadIdx.x * dataset_size] = d;
+		__syncthreads();
+
 	}
 }
 
@@ -38,8 +29,8 @@ void min_dinstance_coalesced_shDS_constQ_cuda(float* dataset, vector<float> quer
 
 	cout << "============= MIN DISTANCE COALESCED SH DATASET CONST QUERY ============" << endl << endl;
 
-	dim3 dim_grid_min_dist = ceil((float)dataset_size / 100);
-	dim3 dim_block_min_dist = 100;
+	dim3 dim_grid_min_dist = dataset_size;
+	dim3 dim_block_min_dist = 128;
 
 	double startGPU;
 	float* constant_query_ptr;
