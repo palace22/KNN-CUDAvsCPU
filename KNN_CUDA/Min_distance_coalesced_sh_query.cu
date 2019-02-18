@@ -12,7 +12,7 @@
 
 __global__ void min_distance_coalesced_sh(float* dataset, float* query, float* results, int dataset_size, int data_size, int query_size) {
 
-	const unsigned TILE = 25;
+	const unsigned TILE = 32;
 	int iteration = query_size / TILE;
 	__shared__ float sh_query[TILE][DATA_SIZE];
 
